@@ -34,7 +34,8 @@ public class Lab2Swing_2 extends JFrame {
 	private JPanel panel_2 = new JPanel();
 	private JPanel panel_1 = new JPanel();
 	private JPanel panel = new JPanel();
-	private JScrollPane scrollPane = new JScrollPane();
+	
+	
 
 	/**
 	 * Launch the application.
@@ -45,7 +46,7 @@ public class Lab2Swing_2 extends JFrame {
 				try {
 					Lab2Swing_2 frame = new Lab2Swing_2();
 					frame.setVisible(true);
-					frame.reading_files();
+					//frame.reading_files();
 					
 					
 				} catch (Exception e) {
@@ -57,8 +58,9 @@ public class Lab2Swing_2 extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws FileNotFoundException 
 	 */
-	public Lab2Swing_2() {
+	public Lab2Swing_2() throws FileNotFoundException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -73,8 +75,23 @@ public class Lab2Swing_2 extends JFrame {
 		
 		// adding the lis tab
 		tabbedPane.addTab("List", null, panel_2, null);
+
 		
-		panel_2.add(scrollPane);
+		//  creating the scrollPane to show the list
+		 JScrollPane scrollPane = new JScrollPane();
+		 scrollPane.setBounds(MAXIMIZED_BOTH, MAXIMIZED_VERT, MAXIMIZED_HORIZ, MAXIMIZED_VERT);
+		DataModel data= new DataModel();
+		arr=data.readfiles("/Users/BORISNDOUTOUME/Documents/workspace/SE319/Software-Engineering-319/Lab2/companies.txt");
+		int size = arr.size();
+		String[] companies=  new String[size];
+				// copies companies names into an array
+			for (int i=0;i<size;i++){
+				companies[i]=arr.get(i);
+			}
+		JList<String> myList  = new JList<String>(companies);  // Add companies array in a Jlist	
+		scrollPane = new JScrollPane(myList);               // adding the JList into the Scrollpane
+		panel_2.add(scrollPane);							// add it to the panel of List tab
+		
 		
 		// adding the Tree panel to the tab
 		tabbedPane.addTab("Tree", null, panel_1, null);
@@ -85,23 +102,6 @@ public class Lab2Swing_2 extends JFrame {
 			
 	}
 	
-	public void reading_files() throws FileNotFoundException{
-		
-		DataModel data= new DataModel();
-		
-		arr=data.readfiles("/Users/BORISNDOUTOUME/Documents/workspace/SE319/Software-Engineering-319/Lab2/companies.txt");
-		int size = arr.size();
-		String[] companies=  new String[size];
-				
-			for (int i=0;i<size;i++){
-				
-				companies[i]=arr.get(i);
-				System.out.println(companies[i]);
-			}
-		JList <String>myList = new JList<String>(companies);
-		
-		scrollPane = new JScrollPane(myList);
-		
-	}
+	
 	
 }
