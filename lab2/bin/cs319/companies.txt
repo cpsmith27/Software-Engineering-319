@@ -6,7 +6,6 @@ Sun
 NEC
 Riverbed
 Bloomberg
-Netflix
 DropBox
 VMware
 General
