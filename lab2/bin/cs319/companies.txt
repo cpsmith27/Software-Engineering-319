@@ -1,6 +1,4 @@
 Accenture
-Apple
-Avanade
 eBay
 Microsoft
 NetApp
@@ -11,7 +9,8 @@ Bloomberg
 Netflix
 DropBox
 VMware
-General Mills
+General
+Mills
 Google
 Yahoo
 Zynga
