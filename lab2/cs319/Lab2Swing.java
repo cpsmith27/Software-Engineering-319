@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -16,16 +17,24 @@ import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
+import java.awt.List;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JTree;
+import javax.swing.JTable;
 
 public class Lab2Swing extends JFrame {
 
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -45,9 +54,9 @@ public class Lab2Swing extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	public Lab2Swing() throws FileNotFoundException {
+	public Lab2Swing() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -150,9 +159,76 @@ public class Lab2Swing extends JFrame {
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Table", null, panel, null);
+		panel.setLayout(null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(6, 6, 405, 208);
+		panel.add(scrollPane_2);
+		
+		String[] columnNames = importCSVHeaders();
+		String[][] dataValues = importCSVData();
+		
+		table = new JTable();
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.setDataVector(dataValues, columnNames);
+		table.setModel(tableModel);
+		scrollPane_2.setViewportView(table);
 	}
 	
 	public JScrollPane getScrollPane() {
 		return scrollPane;
+	}
+	
+	public String[] importCSVHeaders() throws FileNotFoundException {
+		String[] headers;
+		
+		File file = new File("/Users/christophersmith/workspace/lab2/src/cs319/people.csv");
+		Scanner sc = new Scanner(file);
+		
+		// Read only first line.
+		headers = sc.nextLine().split(",");
+		
+		sc.close();
+		
+		return headers;
+	}
+	
+	public String[][] importCSVData() throws IOException {
+		String data;
+		
+		// Slurp file
+		data = readFile("/Users/christophersmith/workspace/lab2/src/cs319/people.csv");
+		
+		// Split the file string by lines
+		String[] lines = data.split("\n");
+		
+		// Split the lines by commas
+		String[][] dataValues = new String[lines.length - 1][];
+		for (int i = 1; i < lines.length; i++) {
+			dataValues[i - 1] = lines[i].split(",");
+		}
+		
+		return dataValues;
+	}
+	
+	// Helper function to slurp contents of text file
+	private String readFile( String file ) throws IOException {
+	    BufferedReader reader = new BufferedReader( new FileReader (file));
+	    StringBuilder stringBuilder = new StringBuilder();
+	    String line = null;
+	    String ls = System.getProperty("line.separator");
+
+	    try {
+	    	// read line by line
+	        while( ( line = reader.readLine() ) != null ) {
+	            stringBuilder.append( line );
+	            stringBuilder.append( ls );
+	        }
+
+	        // Concatenate lines together
+	        return stringBuilder.toString();
+	    } finally {
+	        reader.close();
+	    }
 	}
 }

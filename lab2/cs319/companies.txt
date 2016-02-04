@@ -1,4 +1,3 @@
-Accenture
 eBay
 Microsoft
 NetApp
