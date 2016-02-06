@@ -14,7 +14,6 @@ public class MyCLient {
 
 		// 1. CONNECT TO THE SERVER AT PORT 4444 
 		Socket socket = new Socket("localhost", 4444);
-		printSocketInfo(socket);
 
     // WAIT A WHILE FOR SERVER TO GET READY TO RECEIVE!
     Thread.sleep(1000);
@@ -24,16 +23,10 @@ public class MyCLient {
 		out.print("Client socket Local Address: " + socket.getLocalAddress() + ":" + socket.getLocalPort());
 		out.println("  Client socket Remote Address: " + socket.getRemoteSocketAddress());
 		out.flush(); // forces data from buffer to be sent to server
+		out.println("Second message.");
+		out.flush();
 		
 		// client dies here
 
 	}
-
-	static void printSocketInfo(Socket s) {
-		System.out.print("Socket on Client Side: ");
-		System.out.print("Local Address: " + s.getLocalAddress() + ":"
-				+ s.getLocalPort());
-		System.out.println("  Remote Address: " + s.getRemoteSocketAddress());
-	}
-
 }
